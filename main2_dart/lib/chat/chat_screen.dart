@@ -27,6 +27,15 @@ class ChatScreen extends StatelessWidget {
     final chats = item.Chats;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          Container(
+            padding: EdgeInsets.only(right: 15),
+            child: Icon(
+              Icons.add_a_photo_sharp,
+              size: 26,
+            ),
+          ),
+        ],
         title: Text(item.name),
       ),
       body: chats == null
