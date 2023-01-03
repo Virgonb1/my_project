@@ -41,11 +41,8 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('My Messenger')),
-        body: ListView.builder(
-          itemBuilder: ((context, index) {
-          return _buildItem(
-          
-          );
+        body: ListView.builder(itemBuilder: ((context, index) {
+          return _buildItem();
         })));
   }
 }

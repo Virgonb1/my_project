@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:main2_dart/chat/chat_screen.dart';
+import 'package:main2_dart/model/chat_model.dart';
+import 'package:main2_dart/utils/consts.dart';
+
+import 'utils/screen_const.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,45 +20,54 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       home: MyHomePage(),
+      routes: {
+        '/home': (context) => MyHomePage(),
+        RouteNames.CHAT_SCREEN: (context) => ChatScreen(),
+      },
+      initialRoute: '/',
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  Widget _buildItem(String index) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: Row(
-        children: [
-          Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              shape: BoxShape.circle,
+  Widget _buildItem(BuildContext context, ChatModel item) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context)
+            .pushNamed(RouteNames.CHAT_SCREEN, arguments: item);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        child: Row(
+          children: [
+            Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                  color: Colors.transparent, shape: BoxShape.circle),
+              height: 60,
+              width: 60,
+              child: Image.asset(
+                item.avatar,
+                fit: BoxFit.cover,
+              ),
             ),
-            height: 60,
-            width: 60,
-            child: Image.asset(
-              'assets/gai.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Quang anh'),
-                Text('ban dang lam gi do'),
-              ],
-            ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(item.name),
+                  Text(item.chat),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  final list = [1, 2, 3, 4, 5, 6, 7, 8];
+  final list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +103,10 @@ class MyHomePage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.separated(
-              itemCount: list.length,
+              itemCount: listChat.length,
               itemBuilder: (context, index) {
-                return _buildItem(index.toString());
+                final item = listChat[index];
+                return _buildItem(context, item);
               },
               separatorBuilder: (context, index) {
                 return Container(
@@ -102,10 +117,12 @@ class MyHomePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Chats'),
-        BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'Setting')
-      ]),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Chats'),
+          BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'Setting'),
+        ],
+      ),
     );
   }
 
